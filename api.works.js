@@ -1,4 +1,7 @@
-  // Function to create DOM elements from working data
+import { filtersButton } from "./filters.js";  
+
+// Function to create DOM elements from working data
+
 function createWorksElements(data) {
   // select DOM Element classe .gallery
   const divGallery = document.querySelector(".gallery");
@@ -21,6 +24,8 @@ function createWorksElements(data) {
     worksElement.appendChild(imageElement);
     worksElement.appendChild(titleElement);
   }
+
+  filtersButton(data)
 }
 
 // Request Get to URL woks from API 

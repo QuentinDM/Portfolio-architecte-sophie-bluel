@@ -94,7 +94,10 @@ nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
-
+a{
+	text-decoration: none;
+	color: inherit;
+}
 li:hover {
 	color: #B1663C;
 }

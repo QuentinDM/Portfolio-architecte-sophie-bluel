@@ -11,6 +11,24 @@ for (let i = 0; i < 4; i++) {
     buttons.classList.add("button-categories")
     //Added buttons in the HTML
     addButtonsFilters.appendChild(buttons);
+
+    // Using the switch to add the specific class to each button
+    switch (i) {
+        case 0:
+            buttons.classList.add("btn-tous");
+            break;
+        case 1:
+            buttons.classList.add("btn-objets");
+            break;
+        case 2:
+            buttons.classList.add("btn-appartements");
+            break;
+        case 3:
+            buttons.classList.add("btn-hotels");
+            break;
+        default:
+            break;
+    }
 }
 
 export function filtersButton(data) {

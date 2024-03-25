@@ -1,0 +1,35 @@
+.edit-mode{
+    background-color: black;
+    color: white;
+    height: 59px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18.77px; 
+}
+
+.test{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.modified{
+    display: flex;
+    gap: 5px;
+    background-color: inherit;
+    border: inherit;
+    cursor: pointer;
+}
+
+.test h2 {
+    margin-right: 15px;
+}
+
+.icon{
+    font-size: 15.58px;
+}

@@ -87,7 +87,7 @@ main{
     align-items: center;
 }
 
-form{
+.connexion-formular{
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -134,4 +134,5 @@ footer nav ul {
 .error-message {
 	color: rgb(241, 0, 0);
 	font-size: 16px;
+	margin: 0px;
 }

@@ -11,7 +11,7 @@
     line-height: 18.77px; 
 }
 
-.test{
+.modified-content{
     display: flex;
     justify-content: center;
     align-items: baseline;
@@ -26,7 +26,7 @@
     cursor: pointer;
 }
 
-.test h2 {
+.modified-content h2 {
     margin-right: 15px;
 }
 

@@ -1,10 +1,51 @@
+// Function to open and close modal
+function OpenAndCloseModal() {
+  const openModalBox = document.querySelector(".modified");
+  const closeModalBox = document.querySelectorAll(".icon-cross");
+  console.log(closeModalBox[0]);
+  const modal = document.querySelector(".modal");
 
+  // Open the modal when the open button is clicked
+  openModalBox.addEventListener("click", function () {
+      modal.style.display = "flex";
+  });
+
+  // Close the modal when the close button is clicked
+  // Iterate over each time there is a class="icon-cross"
+  closeModalBox.forEach(icon => {
+    icon.addEventListener("click", function() {
+        // Code à exécuter lors du clic sur l'icône
+        console.log("Icon clicked");
+        modal.style.display = "none"
+    });
+  });
+
+  // Close the modal when the Escape key is pressed
+  window.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" || e.key === "Esc") {
+          modal.style.display = "none";
+      }
+  });
+}
+
+function test() {
+  const replaceModal = document.querySelector(".btn")
+  //Event click on button for change Modal (Modal who can add Picture)
+  replaceModal.addEventListener("click", function () {
+    const modalAddPictures = document.querySelector(".modal-wrapper2") 
+    const modalDeletedPics = document.querySelector(".modal-wrapper")
+    modalAddPictures.style.display = "flex";
+    modalDeletedPics.style.display = "none";
+  })
+}
+//call each function for Modal
+OpenAndCloseModal();
+test();
 
 // Function to create DOM elements from working data
-
 function createWorksElements(data) {
     // select DOM Element with class .gallery
-    const divGallery = document.querySelector(".gallery");
+    const divGallery = document.querySelector(".gallery-modal");
     
     // Loop through data and add image and title into figure tag, then append the figure tag to the DOM element with class .gallery
     for (let i = 0; i < data.length; i++) {

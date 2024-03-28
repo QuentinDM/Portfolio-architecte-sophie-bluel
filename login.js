@@ -1,7 +1,4 @@
 
-
-
-
 function usersConnexion() {
   const connexionFormular = document.querySelector(".connexion-formular");
   connexionFormular.addEventListener("submit", function (event) {

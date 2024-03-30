@@ -1,4 +1,5 @@
 
+
 function usersConnexion() {
   const connexionFormular = document.querySelector(".connexion-formular");
   connexionFormular.addEventListener("submit", function (event) {
@@ -30,10 +31,11 @@ function usersConnexion() {
           return response.json();
       })
       .then(data => {
-          // Gérer la réponse du serveur
-          console.log(data); // Afficher la réponse du serveur
-          // Exemple de redirection vers une autre page
-          window.location.href = "/FrontEnd/homepage.edit.html";
+          localStorage.setItem("token", JSON.stringify(data.token));
+          //console.log(JSON.parse(localStorage.getItem("token")));
+          // Exemple de redirection vers  une autre page
+          window.location.href = "./homepage.edit.html";
+          
       })
       .catch(error => {
             const formularSection = document.querySelector(".formular");
@@ -56,3 +58,5 @@ function usersConnexion() {
 
 // Appeler la fonction lors du chargement de la page
 usersConnexion();
+
+

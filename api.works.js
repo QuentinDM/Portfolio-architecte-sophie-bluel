@@ -3,7 +3,7 @@ import { filtersButton } from "./filters.js";
 // Function to create DOM elements from working data
 
 function createWorksElements(data) {
-  // select DOM Element classe .gallery
+  // select DOM Element classe .gallery;
   const divGallery = document.querySelector(".gallery");
   
   // Loop, Add image and title into figure tag and this figur tag add into Dom element div class .gallery

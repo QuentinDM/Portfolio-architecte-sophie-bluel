@@ -2,7 +2,6 @@
 function OpenAndCloseModal() {
   const openModalBox = document.querySelector(".modified");
   const closeModalBox = document.querySelectorAll(".icon-cross");
-  console.log(closeModalBox[0]);
   const modal = document.querySelector(".modal");
 
   // Open the modal when the open button is clicked
@@ -28,7 +27,7 @@ function OpenAndCloseModal() {
   });
 }
 
-function test() {
+function modalswitch() {
   const replaceModal = document.querySelector(".btn")
   //Event click on button for change Modal (Modal who can add Picture)
   replaceModal.addEventListener("click", function () {
@@ -40,7 +39,7 @@ function test() {
 }
 //call each function for Modal
 OpenAndCloseModal();
-test();
+modalswitch();
 
 // Function to create DOM elements from working data
 function createWorksElements(data) {
@@ -57,7 +56,7 @@ function createWorksElements(data) {
 
         // Create trash icon
         const deletedIcons = document.createElement("i");
-        deletedIcons.classList.add("fa", "fa-trash", "trash-icons"); // Add classes for the trash icon
+        deletedIcons.classList.add("fa-solid", "fa-trash-can", "trash-icons"); // Add classes for the trash icon
 
         // Create a container for the image and trash icon
         const container = document.createElement("div");
@@ -68,11 +67,54 @@ function createWorksElements(data) {
         divGallery.appendChild(container);
 
         // Add event listener to each trash icon
-        deletedIcons.addEventListener("click", function () {
+        /*deletedIcons.addEventListener("click", function () {
             const parentContainer = this.parentNode;
             parentContainer.remove(); // Remove the parent container when the trash icon is clicked
-        });
+        });*/
     }
+}
+
+// Function to log the ids of items in the data array
+function getWorkIds(data) {
+
+  const token = JSON.parse(window.localStorage.getItem("token")); // recuperation du token
+
+  const deletedIcons = document.querySelectorAll(".trash-icons");
+  // On stocke chaque id des travaux dans une variable, à l'aide de la fonction map(qui sera dans un tableau automatiquement)
+  const id = data.map(data => data.id);
+  // Parcourir chaque icône de suppression
+  for (let i = 0; i < deletedIcons.length; i++) {
+    // Ajouter l'attribut id à l'icône de suppression
+    deletedIcons[i].setAttribute('id', id[i]);
+
+    // Éviter de créer 100 fois un événement "click", si on met juste "deletedIcons", mais si on met "deletedIcons[i]", on cible et crée un seul événement "click" sur chaque icône
+    deletedIcons[i].addEventListener("click", function () {
+      // Récupérer l'ID de l'icône spécifique sur laquelle vous avez cliqué
+      const iconId = this.getAttribute('id');
+      // Afficher l'ID dans la console
+      console.log("ID de l'icône cliquée :", iconId);
+      // Effectuer une requête FETCH avec l'ID de l'icône pour récupérer les données spécifiques du travail
+      fetch(`http://localhost:5678/api/works/${iconId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}` // Utilisation du token obtenu à partir de la réponse précédente
+      } 
+      })
+        .then(response => {
+          // Vérifier si la réponse est correcte
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        // Récupérer les données de la réponse JSON et les afficher dans la console
+        .then(data => console.log(data))
+        // Gérer les erreurs
+        .catch(error => {
+          console.error('Une erreur est survenue lors de la récupération des données :', error);
+        });
+    });
+  }
 }
 
 // Request Get to URL woks from API 
@@ -88,8 +130,12 @@ fetch("http://localhost:5678/api/works")
   // receive data from response.JSON() and call createWorksElements(data) function
   .then(data => {
     createWorksElements(data);
+    getWorkIds(data);
   })
   // Handle Error
   .catch(error => {
     console.error('Une erreur est survenue lors de la récupération des données :', error);
   });
+//console.log(JSON.parse(localStorage.getItem("token")));
+  const token = JSON.parse(window.localStorage.getItem("token"))
+  console.log(`Bearer ${token}`);

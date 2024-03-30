@@ -1,9 +1,12 @@
+const modalAddPictures = document.querySelector(".modal-wrapper2");
+const modalDeletedPics = document.querySelector(".modal-wrapper");
+
 // Function to open and close modal
 function OpenAndCloseModal() {
   const openModalBox = document.querySelector(".modified");
   const closeModalBox = document.querySelectorAll(".icon-cross");
   const modal = document.querySelector(".modal");
-
+  const returnModal = document.querySelector(".arrow-left");
   // Open the modal when the open button is clicked
   openModalBox.addEventListener("click", function () {
       modal.style.display = "flex";
@@ -25,14 +28,18 @@ function OpenAndCloseModal() {
           modal.style.display = "none";
       }
   });
+  // Return to the last modal
+  returnModal.addEventListener("click", function () {
+    modalAddPictures.style.display = "none";
+    modalDeletedPics.style.display = "flex";
+  })
 }
+
 
 function modalswitch() {
   const replaceModal = document.querySelector(".btn")
   //Event click on button for change Modal (Modal who can add Picture)
   replaceModal.addEventListener("click", function () {
-    const modalAddPictures = document.querySelector(".modal-wrapper2") 
-    const modalDeletedPics = document.querySelector(".modal-wrapper")
     modalAddPictures.style.display = "flex";
     modalDeletedPics.style.display = "none";
   })

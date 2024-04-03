@@ -143,6 +143,69 @@ fetch("http://localhost:5678/api/works")
   .catch(error => {
     console.error('Une erreur est survenue lors de la récupération des données :', error);
   });
-//console.log(JSON.parse(localStorage.getItem("token")));
-  const token = JSON.parse(window.localStorage.getItem("token"))
-  console.log(`Bearer ${token}`);
+
+  
+
+
+
+
+
+
+
+//Replace all content in div class="uploded" by image from files
+const input = document.getElementById("new-work-pics");
+const preview = document.getElementById("preview");
+
+const title = document.querySelector("[name=title]");
+const categories = document.querySelector("[name=categories]").value;
+
+const sendRequest = document.querySelector(".btn-send");
+
+console.log(sendRequest);
+input.addEventListener("change", updateImageDisplay);
+
+function updateImageDisplay() {
+    while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+    }
+
+    const curFiles = input.files;
+    console.log(curFiles.name);
+    if (curFiles.length === 0) {
+        const para = document.createElement("p");
+        para.textContent = "Aucun fichier sélectionné pour le téléversement";
+        preview.appendChild(para);
+    } else {
+        const image = document.createElement("img");
+        preview.appendChild(image);
+        for (let i = 0; i < curFiles.length; i++) {
+            if (validFileType(curFiles[i])) {
+              image.src = window.URL.createObjectURL(curFiles[i]);
+              image.classList.add("image-src");
+              console.log(curFiles[i].name);
+              sendRequest.addEventListener("click", function (event) {
+
+                event.preventDefault();
+
+                const title = document.querySelector("[name=title]").value;
+                //const categories = event.target.querySelector("[name=categories]").value;
+
+                curFiles[i].name = title;
+                console.log(curFiles[i].name);
+              })
+          }
+        }
+    }
+}
+
+var fileTypes = ["image/jpeg", "image/pjpeg", "image/png"];
+function validFileType(file) {
+    // Logique pour valider le type de fichier
+    for (var i = 0; i < fileTypes.length; i++) {
+      if (file.type === fileTypes[i]) {
+        return true;
+      }
+    }
+    return false;
+}
+

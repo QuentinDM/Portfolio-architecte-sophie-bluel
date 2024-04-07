@@ -60,6 +60,7 @@ function createWorksElements(data) {
         // Create image element and set its src attribute
         const imageElement = document.createElement("img");
         imageElement.src = works.imageUrl;
+        imageElement.classList.add("images-modal-one");
 
         // Create trash icon
         const deletedIcons = document.createElement("i");
@@ -80,11 +81,10 @@ function createWorksElements(data) {
         });*/
     }
 }
+const token = JSON.parse(window.localStorage.getItem("token")); // recuperation du token
 
 // Function to log the ids of items in the data array
 function getWorkIds(data) {
-
-  const token = JSON.parse(window.localStorage.getItem("token")); // recuperation du token
 
   const deletedIcons = document.querySelectorAll(".trash-icons");
   // On stocke chaque id des travaux dans une variable, à l'aide de la fonction map(qui sera dans un tableau automatiquement)
@@ -152,17 +152,50 @@ fetch("http://localhost:5678/api/works")
 
 
 
+
 //Replace all content in div class="uploded" by image from files
 const input = document.getElementById("new-work-pics");
 const preview = document.getElementById("preview");
 
-const title = document.querySelector("[name=title]");
-const categories = document.querySelector("[name=categories]").value;
+input.addEventListener("change", updateImageDisplay); //ajout de l'image dans le html
 
-const sendRequest = document.querySelector(".btn-send");
+const form = document.querySelector("#workinfo");
+const output = document.querySelector("#output");
 
-console.log(sendRequest);
-input.addEventListener("change", updateImageDisplay);
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    console.log(jeSuisUnTest);
+    //jeSuisUnTest.alt = "une image de travail de Sophie";// ajout d'un alt pour les malvoillants
+  
+    // Ajouter les éléments à FormData à l'intérieur de la fonction de rappel de soumission du formulaire
+    const formData = new FormData(form);
+   // const title = formData.get("title");
+    formData.append("image", jeSuisUnTest, "image/jpeg");
+    //const category = formData.get("category");
+    //console.log({title, jeSuisUnTest, category});
+
+    // Effectuer la requête fetch avec les données FormData
+    fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${token}`},
+        body: formData
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`Erreur ${response.status} lors de la tentative de téléversement du fichier.`);
+        }
+        return response.text();
+    })
+    .then((data) => {
+        console.log(data);
+        output.innerHTML = "Fichier téléversé !";
+    })
+    .catch((error) => {
+        output.innerHTML = error.message;
+    });
+});
+let jeSuisUnTest = "";
 
 function updateImageDisplay() {
     while (preview.firstChild) {
@@ -170,7 +203,7 @@ function updateImageDisplay() {
     }
 
     const curFiles = input.files;
-    console.log(curFiles.name);
+    
     if (curFiles.length === 0) {
         const para = document.createElement("p");
         para.textContent = "Aucun fichier sélectionné pour le téléversement";
@@ -180,20 +213,11 @@ function updateImageDisplay() {
         preview.appendChild(image);
         for (let i = 0; i < curFiles.length; i++) {
             if (validFileType(curFiles[i])) {
-              image.src = window.URL.createObjectURL(curFiles[i]);
-              image.classList.add("image-src");
-              console.log(curFiles[i].name);
-              sendRequest.addEventListener("click", function (event) {
-
-                event.preventDefault();
-
-                const title = document.querySelector("[name=title]").value;
-                //const categories = event.target.querySelector("[name=categories]").value;
-
-                curFiles[i].name = title;
-                console.log(curFiles[i].name);
-              })
-          }
+                image.src = window.URL.createObjectURL(curFiles[i]);
+                image.classList.add("image-src");
+                jeSuisUnTest = curFiles[i];
+                console.log(jeSuisUnTest);
+            }
         }
     }
 }
@@ -208,4 +232,5 @@ function validFileType(file) {
     }
     return false;
 }
+
 

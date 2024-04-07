@@ -2,6 +2,7 @@
 
 function usersConnexion() {
   const connexionFormular = document.querySelector(".connexion-formular");
+  console.log(connexionFormular);
   connexionFormular.addEventListener("submit", function (event) {
       event.preventDefault();
       
@@ -31,6 +32,7 @@ function usersConnexion() {
           return response.json();
       })
       .then(data => {
+        //mettre le token disponible
           localStorage.setItem("token", JSON.stringify(data.token));
           //console.log(JSON.parse(localStorage.getItem("token")));
           // Exemple de redirection vers  une autre page

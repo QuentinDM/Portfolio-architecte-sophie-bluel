@@ -5,16 +5,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    /*position: absolute;*/
-    /*top: 50%; /* Centrer verticalement */
-    /*left: 50%; /* Centrer horizontalement */
-    /*transform: translate(-50%, -50%); /* Ajuster pour le centrage */
     display: none; /* align the div in the center*/
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.8);
     border: 1px solid #060606;
     box-sizing: border-box;
+    overflow: auto;
 }
 
 .modal-wrapper{
@@ -103,6 +100,10 @@
     background-color: #1d6154ef;
 }
 
+.images-modal-one{/* make all new img in the same side in the modal delet*/
+    height: 102.58px;
+    object-fit: cover;
+}
 /*********************Style CSS of modal 2 (Add works)*******************************/
 .modal-wrapper2{
     display: none;
@@ -198,4 +199,5 @@ form{
 .image-src{
     width: 129px;
     height: 193px;
+    object-fit: cover;
 }

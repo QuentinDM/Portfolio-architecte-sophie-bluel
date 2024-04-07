@@ -12,6 +12,7 @@ function createWorksElements(data) {
   
       const imageElement = document.createElement("img");
       imageElement.src = works.imageUrl;
+      imageElement.classList.add("images-works");
   
       const titleElement = document.createElement("figcaption");
       titleElement.innerHTML = works.title;

@@ -48,6 +48,8 @@ function modalswitch() {
 OpenAndCloseModal();
 modalswitch();
 
+const token = JSON.parse(window.localStorage.getItem("token")); // recuperation du token
+
 // Function to create DOM elements from working data
 function createWorksElements(data) {
     // select DOM Element with class .gallery
@@ -74,18 +76,11 @@ function createWorksElements(data) {
         // Append the container to the gallery
         divGallery.appendChild(container);
 
-        // Add event listener to each trash icon
-        /*deletedIcons.addEventListener("click", function () {
-            const parentContainer = this.parentNode;
-            parentContainer.remove(); // Remove the parent container when the trash icon is clicked
-        });*/
     }
 }
-const token = JSON.parse(window.localStorage.getItem("token")); // recuperation du token
 
-// Function to log the ids of items in the data array
-function getWorkIds(data) {
-
+// Function to log the ids of items and request to delet from the API HTTP
+function deletWorkIds(data) {
   const deletedIcons = document.querySelectorAll(".trash-icons");
   // On stocke chaque id des travaux dans une variable, à l'aide de la fonction map(qui sera dans un tableau automatiquement)
   const id = data.map(data => data.id);
@@ -98,8 +93,7 @@ function getWorkIds(data) {
     deletedIcons[i].addEventListener("click", function () {
       // Récupérer l'ID de l'icône spécifique sur laquelle vous avez cliqué
       const iconId = this.getAttribute('id');
-      // Afficher l'ID dans la console
-      console.log("ID de l'icône cliquée :", iconId);
+
       // Effectuer une requête FETCH avec l'ID de l'icône pour récupérer les données spécifiques du travail
       fetch(`http://localhost:5678/api/works/${iconId}`, {
         method: "DELETE",
@@ -137,45 +131,59 @@ fetch("http://localhost:5678/api/works")
   // receive data from response.JSON() and call createWorksElements(data) function
   .then(data => {
     createWorksElements(data);
-    getWorkIds(data);
+    deletWorkIds(data);
+    console.log(data);
   })
   // Handle Error
   .catch(error => {
     console.error('Une erreur est survenue lors de la récupération des données :', error);
   });
 
-  
 
 
 
+// Replace all content in div class="uploaded" with images from files
+const input = document.getElementById("new-work-pics"); // Input element for selecting images
+const preview = document.getElementById("preview"); // Container to display preview of selected images
+let newImage = ""; // Variable to hold the selected image globally
+const categoryValue = document.querySelector("#categories"); // Input element for selecting categories
+let formaDataSet = ""; // Variable to store the selected category
 
+// Event listener to trigger when files are selected
+input.addEventListener("change", updateImageDisplay);
 
+const form = document.querySelector("#workinfo"); // Form element
+const output = document.querySelector("#output"); // Output container
 
-
-
-//Replace all content in div class="uploded" by image from files
-const input = document.getElementById("new-work-pics");
-const preview = document.getElementById("preview");
-
-input.addEventListener("change", updateImageDisplay); //ajout de l'image dans le html
-
-const form = document.querySelector("#workinfo");
-const output = document.querySelector("#output");
-
+// Event listener for form submission
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    console.log(jeSuisUnTest);
-    //jeSuisUnTest.alt = "une image de travail de Sophie";// ajout d'un alt pour les malvoillants
-  
-    // Ajouter les éléments à FormData à l'intérieur de la fonction de rappel de soumission du formulaire
-    const formData = new FormData(form);
-   // const title = formData.get("title");
-    formData.append("image", jeSuisUnTest, "image/jpeg");
-    //const category = formData.get("category");
-    //console.log({title, jeSuisUnTest, category});
+  // Determine the category value based on the selected option
+  switch (categoryValue.value) {
+    case "Objets":
+        formaDataSet = 1;
+        break;
+    case "Appartements":
+        formaDataSet = 2;
+        break;
+    case "Hotels & restaurants":
+        formaDataSet = 3;
+        break;
+    default:
+        // Handle default case if necessary
+        break;
+  }
 
-    // Effectuer la requête fetch avec les données FormData
+    // Add elements to FormData within the form submission callback function
+    const formData = new FormData(form);
+    
+    // Append the selected image to FormData
+    formData.append("image", newImage, "image/jpeg");
+    formData.set("category", parseInt(formaDataSet)); // Replace input.value with a number, paresint to keep like INTEGER, get() default change it like string
+    console.log(formData);
+    
+    // Perform fetch request with FormData
     fetch("http://localhost:5678/api/works", {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}`},
@@ -183,54 +191,58 @@ form.addEventListener("submit", async (event) => {
     })
     .then((response) => {
         if (!response.ok) {
-            throw new Error(`Erreur ${response.status} lors de la tentative de téléversement du fichier.`);
+            throw new Error(`Error ${response.status} while trying to upload the file.`);
         }
         return response.text();
     })
     .then((data) => {
         console.log(data);
-        output.innerHTML = "Fichier téléversé !";
+        output.innerHTML = "File uploaded!";
     })
     .catch((error) => {
         output.innerHTML = error.message;
     });
 });
-let jeSuisUnTest = "";
 
+// Function to update the display with selected images
 function updateImageDisplay() {
+    // Clear previous content in preview
     while (preview.firstChild) {
         preview.removeChild(preview.firstChild);
     }
 
-    const curFiles = input.files;
+    const curFiles = input.files; // Get the selected files
     
+    // Check if files are selected
     if (curFiles.length === 0) {
         const para = document.createElement("p");
-        para.textContent = "Aucun fichier sélectionné pour le téléversement";
+        para.textContent = "No file selected for upload";
         preview.appendChild(para);
     } else {
+        // Display the selected image
         const image = document.createElement("img");
         preview.appendChild(image);
         for (let i = 0; i < curFiles.length; i++) {
+            // Check if the file type is valid
             if (validFileType(curFiles[i])) {
                 image.src = window.URL.createObjectURL(curFiles[i]);
                 image.classList.add("image-src");
-                jeSuisUnTest = curFiles[i];
-                console.log(jeSuisUnTest);
+                newImage = curFiles[i];
             }
         }
     }
 }
 
-var fileTypes = ["image/jpeg", "image/pjpeg", "image/png"];
+// Array containing valid file types
+var fileTypes = ["image/jpeg", "image/png"];
+
+// Function to validate file type
 function validFileType(file) {
-    // Logique pour valider le type de fichier
+    // Logic to validate file type
     for (var i = 0; i < fileTypes.length; i++) {
-      if (file.type === fileTypes[i]) {
-        return true;
-      }
+        if (file.type === fileTypes[i]) {
+            return true;
+        }
     }
     return false;
 }
-
-

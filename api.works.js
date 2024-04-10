@@ -9,13 +9,15 @@ function createWorksElements(data) {
   // Loop, Add image and title into figure tag and this figur tag add into Dom element div class .gallery
   for (let i = 0; i < data.length; i++) {
     const works = data[i];
-
     const worksElement = document.createElement("figure");
+    worksElement.setAttribute("data-value", works.categoryId);
 
+    // Create an <img> element for the work image
     const imageElement = document.createElement("img");
     imageElement.src = works.imageUrl;
     imageElement.classList.add("images-works");
 
+    // Create a <figcaption> element for the work title
     const titleElement = document.createElement("figcaption");
     titleElement.innerHTML = works.title;
 
@@ -25,7 +27,7 @@ function createWorksElements(data) {
     worksElement.appendChild(imageElement);
     worksElement.appendChild(titleElement);
   }
-
+  // Call the filtersButton function to add event listeners to filter buttons
   filtersButton(data)
 }
 

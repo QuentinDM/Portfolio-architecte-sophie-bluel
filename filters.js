@@ -32,40 +32,51 @@ for (let i = 0; i < 4; i++) {
 }
 
 export function filtersButton(data) {
+    // Select the buttons and figure elements
     const buttonFilterTous = document.querySelector(".btn-tous");
-    buttonFilterTous.addEventListener("click", function () {
-        // Filtrer les données pour ne récupérer que les objets
-        const filteredData = data.filter(item => item.category.name);
+    const tous = document.querySelectorAll("figure[data-value]");
+    const objets = document.querySelectorAll('figure[data-value="1"]');
+    const appartements = document.querySelectorAll('figure[data-value="2"]');
+    const hotelAndRestaurant = document.querySelectorAll('figure[data-value="3"]');
+    
+    // Function to display elements with a given style
+    function displayElements(elements, displayStyle) {
+        elements.forEach(element => {
+            element.style.display = displayStyle;
+        });
+    }
 
-        // Utiliser les données filtrées comme nécessaire
-        console.log(filteredData);
+    // Event listener for the "Tous" button
+    buttonFilterTous.addEventListener("click", function () {
+        // Display all elements
+        displayElements(tous, "grid");
     });
 
+    // Event listener for the "Objets" button
     const buttonFilterObjets = document.querySelector(".btn-objets");
     buttonFilterObjets.addEventListener("click", function () {
-        // Filtrer les données pour ne récupérer que les objets
-        const filteredData = data.filter(item => item.category.name === "Objets");
-
-        // Utiliser les données filtrées comme nécessaire
-        console.log(filteredData);
+        // Display objets and hide other categories
+        displayElements(objets, "grid");
+        displayElements(appartements, "none");
+        displayElements(hotelAndRestaurant, "none");
     });
 
+    // Event listener for the "Appartements" button
     const buttonFilterAppartements = document.querySelector(".btn-appartements");
     buttonFilterAppartements.addEventListener("click", function () {
-        // Filtrer les données pour ne récupérer que les objets
-        const filteredData = data.filter(item => item.category.name === "Appartements");
-
-        // Utiliser les données filtrées comme nécessaire
-        console.log(filteredData);
+        // Display appartements and hide other categories
+        displayElements(objets, "none");
+        displayElements(appartements, "grid");
+        displayElements(hotelAndRestaurant, "none");
     });
 
+    // Event listener for the "Hotels" button
     const buttonFilterHotels = document.querySelector(".btn-hotels");
     buttonFilterHotels.addEventListener("click", function () {
-        // Filtrer les données pour ne récupérer que les objets
-        const filteredData = data.filter(item => item.category.name === "Hotels & restaurants");
-
-        // Utiliser les données filtrées comme nécessaire
-        console.log(filteredData);
+        // Display hotels and restaurants and hide other categories
+        displayElements(objets, "none");
+        displayElements(appartements, "none");
+        displayElements(hotelAndRestaurant, "grid");
     });
 }
 

@@ -132,7 +132,6 @@ fetch("http://localhost:5678/api/works")
   .then(data => {
     createWorksElements(data);
     deletWorkIds(data);
-    console.log(data);
   })
   // Handle Error
   .catch(error => {
@@ -162,7 +161,7 @@ form.addEventListener("submit", async (event) => {
   // Determine the category value based on the selected option
   switch (categoryValue.value) {
     case "Objets":
-        formaDataSet = 1;
+        formaDataSet = parseInt(1);
         break;
     case "Appartements":
         formaDataSet = 2;
@@ -180,8 +179,9 @@ form.addEventListener("submit", async (event) => {
     
     // Append the selected image to FormData
     formData.append("image", newImage, "image/jpeg");
-    formData.set("category", parseInt(formaDataSet)); // Replace input.value with a number, paresint to keep like INTEGER, get() default change it like string
-    console.log(formData);
+    
+    formData.set("category", parseInt(formaDataSet)); // Replace input.value with a number, paresint to keep like INTEGER, set() default change it like string
+   
     
     // Perform fetch request with FormData
     fetch("http://localhost:5678/api/works", {

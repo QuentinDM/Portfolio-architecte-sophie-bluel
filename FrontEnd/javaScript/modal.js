@@ -28,6 +28,7 @@ function OpenAndCloseModal() {
           modal.style.display = "none";
       }
   });
+  
   // Return to the last modal
   returnModal.addEventListener("click", function () {
     modalAddPictures.style.display = "none";

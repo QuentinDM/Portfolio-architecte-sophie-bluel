@@ -6,10 +6,14 @@ function OpenAndCloseModal() {
   const openModalBox = document.querySelector(".modified");
   const closeModalBox = document.querySelectorAll(".icon-cross");
   const modal = document.querySelector(".modal");
+
   const returnModal = document.querySelector(".arrow-left");
+
   // Open the modal when the open button is clicked
   openModalBox.addEventListener("click", function () {
-      modal.style.display = "flex";
+    modal.style.display = "flex";
+    modalAddPictures.style.display = "none";//make the focus on the first modal 
+    modalDeletedPics.style.display = "flex";//make the focus on the first modal 
   });
 
   // Close the modal when the close button is clicked
@@ -17,10 +21,17 @@ function OpenAndCloseModal() {
   closeModalBox.forEach(icon => {
     icon.addEventListener("click", function() {
         // Code à exécuter lors du clic sur l'icône
-        console.log("Icon clicked");
         modal.style.display = "none"
     });
   });
+
+  //if we cliked outside from the modal
+  window.addEventListener("click", (e) =>{
+    if (e.target === modal) {
+      console.log(e.target);
+      modal.style.display = "none";
+    }
+  })
 
   // Close the modal when the Escape key is pressed
   window.addEventListener("keydown", function (e) {
@@ -28,7 +39,7 @@ function OpenAndCloseModal() {
           modal.style.display = "none";
       }
   });
-  
+
   // Return to the last modal
   returnModal.addEventListener("click", function () {
     modalAddPictures.style.display = "none";

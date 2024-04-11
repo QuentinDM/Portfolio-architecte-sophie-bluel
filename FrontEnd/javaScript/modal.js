@@ -102,7 +102,8 @@ function deletWorkIds(data) {
     deletedIcons[i].setAttribute('id', id[i]);
 
     // Éviter de créer 100 fois un événement "click", si on met juste "deletedIcons", mais si on met "deletedIcons[i]", on cible et crée un seul événement "click" sur chaque icône
-    deletedIcons[i].addEventListener("click", function () {
+    deletedIcons[i].addEventListener("click", function (event) {
+      event.preventDefault();//page don't refresh
       // Récupérer l'ID de l'icône spécifique sur laquelle vous avez cliqué
       const iconId = this.getAttribute('id');
 

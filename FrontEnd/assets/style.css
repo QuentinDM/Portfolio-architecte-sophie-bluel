@@ -151,6 +151,7 @@ li:hover {
 .button-categories:hover{
 	background-color: #1D6154;
 	color: white;
+	cursor: pointer;
 }
 /* End code added */ 
 

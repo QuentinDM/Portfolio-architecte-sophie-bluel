@@ -12,7 +12,7 @@ function OpenAndCloseModal() {
   // Open the modal when the open button is clicked
   openModalBox.addEventListener("click", function () {
     modal.style.display = "flex";
-    modalAddPictures.style.display = "none";//make the focus on the first modal 
+    modalAddPictures.style.display = "none";//make the focus on the first modal   
     modalDeletedPics.style.display = "flex";//make the focus on the first modal 
   });
 

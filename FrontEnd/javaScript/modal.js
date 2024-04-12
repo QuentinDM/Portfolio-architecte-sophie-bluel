@@ -1,13 +1,14 @@
 const modalAddPictures = document.querySelector(".modal-wrapper2");
 const modalDeletedPics = document.querySelector(".modal-wrapper");
 
+
+const closeModalBox = document.querySelectorAll(".icon-cross");
+const returnModal = document.querySelector(".arrow-left");
+const openModalBox = document.querySelector(".modified");
+const modal = document.querySelector(".modal");
+
 // Function to open and close modal
 function OpenAndCloseModal() {
-  const openModalBox = document.querySelector(".modified");
-  const closeModalBox = document.querySelectorAll(".icon-cross");
-  const modal = document.querySelector(".modal");
-
-  const returnModal = document.querySelector(".arrow-left");
 
   // Open the modal when the open button is clicked
   openModalBox.addEventListener("click", function () {
@@ -47,7 +48,6 @@ function OpenAndCloseModal() {
   })
 }
 
-
 function modalswitch() {
   const replaceModal = document.querySelector(".btn")
   //Event click on button for change Modal (Modal who can add Picture)
@@ -60,7 +60,7 @@ function modalswitch() {
 OpenAndCloseModal();
 modalswitch();
 
-const token = JSON.parse(window.localStorage.getItem("token")); // recuperation du token
+const token = JSON.parse(window.localStorage.getItem("token")); // token for delete and Post works
 
 // Function to create DOM elements from working data
 function createWorksElements(data) {
@@ -103,7 +103,7 @@ function deletWorkIds(data) {
 
     // Éviter de créer 100 fois un événement "click", si on met juste "deletedIcons", mais si on met "deletedIcons[i]", on cible et crée un seul événement "click" sur chaque icône
     deletedIcons[i].addEventListener("click", function (event) {
-      event.preventDefault();//page don't refresh
+      
       // Récupérer l'ID de l'icône spécifique sur laquelle vous avez cliqué
       const iconId = this.getAttribute('id');
 
@@ -119,10 +119,8 @@ function deletWorkIds(data) {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
-          return response.json();
+          event.preventDefault();//page don't refresh
         })
-        // Récupérer les données de la réponse JSON et les afficher dans la console
-        .then(data => console.log(data))
         // Gérer les erreurs
         .catch(error => {
           console.error('Une erreur est survenue lors de la récupération des données :', error);
@@ -166,6 +164,7 @@ input.addEventListener("change", updateImageDisplay);
 
 const form = document.querySelector("#workinfo"); // Form element
 const output = document.querySelector("#output"); // Output container
+const trye = document.querySelector(".box-timer");// timer container
 
 // Event listener for form submission
 form.addEventListener("submit", async (event) => {
@@ -195,28 +194,55 @@ form.addEventListener("submit", async (event) => {
     
     formData.set("category", parseInt(formaDataSet)); // Replace input.value with a number, paresint to keep like INTEGER, set() default change it like string
    
-    
-    // Perform fetch request with FormData
-    fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: { "Authorization": `Bearer ${token}`},
-        body: formData
-    })
-    .then((response) => {
-        if (!response.ok) {
-            throw new Error(`Error ${response.status} while trying to upload the file.`);
-        }
-        return response.text();
-    })
-    .then((data) => {
-        console.log(data);
-        output.innerHTML = "File uploaded!";
-    })
-    .catch((error) => {
-        output.innerHTML = error.message;
-    });
-});
+    // Remaining time in seconds
+    let remainingTime = 3;
 
+    // Function to update the message with the timer
+    function updateMessage() { 
+      trye.classList.add('output');
+      output.innerHTML = `Your form will be sent in ${remainingTime} seconds...`;
+    }
+
+    function myAnimation() {
+      const timer = document.createElement("div");
+      timer.classList.add("timer-animation");
+      trye.append(timer);
+    }
+
+    // Update the message initially
+    updateMessage();
+    myAnimation();
+    // Countdown
+    const countdownInterval = setInterval(() => {
+        
+        remainingTime--;
+        updateMessage();
+        // If the remaining time reaches 0, stop the counter and send the form
+        if (remainingTime === 0) {
+            output.innerHTML = "Your form has been successfully sent!";
+            trye.style.background = "green"
+            clearInterval(countdownInterval);
+
+            setTimeout(() => {
+              // Perform fetch request with FormData
+              fetch("http://localhost:5678/api/works", {
+                  method: "POST",
+                  headers: { "Authorization": `Bearer ${token}`},
+                  body: formData
+              })
+              .then((response) => {
+                  if (!response.ok) {
+                      throw new Error(`Error ${response.status} while trying to upload the file.`);
+                  }
+                  return response.json();
+              })
+              .catch((error) => {
+                console.error('Une erreur est survenue lors de la connexion :', error);
+              });
+            }, 1000)
+        }
+    }, 1000); // Call every second (1000 milliseconds)
+});
 // Function to update the display with selected images
 function updateImageDisplay() {
     // Clear previous content in preview

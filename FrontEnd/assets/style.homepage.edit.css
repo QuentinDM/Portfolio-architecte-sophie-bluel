@@ -26,6 +26,10 @@
     cursor: pointer;
 }
 
+.modified:active{
+    color: #B1663C
+}
+
 .modified-content h2 {
     margin-right: 15px;
 }

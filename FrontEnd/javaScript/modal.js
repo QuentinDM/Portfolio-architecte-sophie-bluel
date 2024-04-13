@@ -249,7 +249,7 @@ form.addEventListener("submit", async (event) => {
         updateMessage();
         // If the remaining time reaches 0, stop the counter and send the form
         if (remainingTime === 0) {
-            output.innerHTML = "Votre formulaire a été envoyé !";
+            output.innerHTML = "Votre formulaire a bien été envoyé !";
             timerContainer.style.background = "green"
             clearInterval(countdownInterval);
         

@@ -1,6 +1,5 @@
 function usersConnexion() {
   const connexionFormular = document.querySelector(".connexion-formular");
-  console.log(connexionFormular);
   connexionFormular.addEventListener("submit", function (event) {
       event.preventDefault();
       

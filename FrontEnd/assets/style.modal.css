@@ -96,13 +96,38 @@
     cursor: pointer;
 }
 
-.btn:hover{
-    background-color: #1d6154ef;
+#btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 237px;
+    height: 36px;
+    font-family: 'Syne';
+    font-weight: 700;
+    color: white;
+    background-color: #A7A7A7;
+    border: inherit;
+    margin: 2em auto;
+    align-content: center;
+    border-radius: 60px;
+    cursor: pointer;
 }
 
+.btn:hover{
+    background-color: #0E2F28;
+}
+
+#btn:hover{
+    background-color: #0E2F28;
+}
 .images-modal-one{/* make all new img in the same side in the modal delet*/
     height: 102.58px;
     object-fit: cover;
+}
+
+.btn-submit{
+    margin-top: 45px;
+    border-top: #B3B3B3 solid 1px;
 }
 /*********************Style CSS of modal 2 (Add works)*******************************/
 .modal-wrapper2{
@@ -164,11 +189,22 @@
 }
 
 .btn-add-pics:hover{
-    background-color: #CBD6DC;
+    background-color: #d2dee4;
     box-shadow: 0px 2px 4px #306685;
-    width: 180px;
 }
 
+.active-btn:active {
+    width: 230px;
+    box-shadow: rgb(204, 219, 232, 0.3) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.3) -3px -3px 6px 1px inset;
+}
+
+#btn:active{
+    width: 230px;
+}
+
+.btn-add-pics:active{
+    width: 163px;
+}
 /* Styles input add pics*/
 
 form{
@@ -200,4 +236,43 @@ form{
     width: 129px;
     height: 193px;
     object-fit: cover;
+}
+/************************* timer CSS ****************************************/
+
+.output{
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+    background: #E8F1F6;
+    padding: 20px;
+    width: 420px;
+    height: 100px;
+    font-size: 20px;
+    color: white;
+}
+
+.timer-animation {
+	background: #ffffff;
+    width: 100%;
+    display: flex;
+    height: 20px;
+    animation: 5s slidein;
+  }
+
+@keyframes slidein {
+	from {
+	  transform: scaleX(0);
+	}
+	to {
+	  transform: scaleX(1);
+	}
+  }
+
+/************************************* Modal2 error message *****************/
+.error{
+    color: red;
+    text-align: center;
+    margin: 5px 0px;
 }

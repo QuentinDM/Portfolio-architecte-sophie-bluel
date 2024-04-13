@@ -1,7 +1,6 @@
 const modalAddPictures = document.querySelector(".modal-wrapper2");
 const modalDeletedPics = document.querySelector(".modal-wrapper");
 
-
 const closeModalBox = document.querySelectorAll(".icon-cross");
 const returnModal = document.querySelector(".arrow-left");
 const openModalBox = document.querySelector(".modified");
@@ -11,7 +10,7 @@ const modal = document.querySelector(".modal");
 function OpenAndCloseModal() {
 
   // Open the modal when the open button is clicked
-  openModalBox.addEventListener("click", function () {
+    openModalBox.addEventListener("click", function () {
     modal.style.display = "flex";
     modalAddPictures.style.display = "none";//make the focus on the first modal   
     modalDeletedPics.style.display = "flex";//make the focus on the first modal 
@@ -29,7 +28,6 @@ function OpenAndCloseModal() {
   //if we cliked outside from the modal
   window.addEventListener("click", (e) =>{
     if (e.target === modal) {
-      console.log(e.target);
       modal.style.display = "none";
     }
   })
@@ -66,11 +64,11 @@ const token = JSON.parse(window.localStorage.getItem("token")); // token for del
 function createWorksElements(data) {
     // select DOM Element with class .gallery
     const divGallery = document.querySelector(".gallery-modal");
-    
+
     // Loop through data and add image and title into figure tag, then append the figure tag to the DOM element with class .gallery
     for (let i = 0; i < data.length; i++) {
         const works = data[i];
-
+        
         // Create image element and set its src attribute
         const imageElement = document.createElement("img");
         imageElement.src = works.imageUrl;
@@ -93,19 +91,27 @@ function createWorksElements(data) {
 
 // Function to log the ids of items and request to delet from the API HTTP
 function deletWorkIds(data) {
-  const deletedIcons = document.querySelectorAll(".trash-icons");
+  const teste = document.querySelectorAll(".images-works");//supprimer aussi le parendNode de l'image qui est a part de la modal
+  const deletedIcons = document.querySelectorAll(".trash-icons");//selectionne toute les images poubelles 
+  
   // On stocke chaque id des travaux dans une variable, à l'aide de la fonction map(qui sera dans un tableau automatiquement)
   const id = data.map(data => data.id);
+  
   // Parcourir chaque icône de suppression
   for (let i = 0; i < deletedIcons.length; i++) {
-    // Ajouter l'attribut id à l'icône de suppression
+    
+    // Ajouter l'attribut id à l'icône de suppression POUR PASSER LA REQUETE FETCH
     deletedIcons[i].setAttribute('id', id[i]);
 
     // Éviter de créer 100 fois un événement "click", si on met juste "deletedIcons", mais si on met "deletedIcons[i]", on cible et crée un seul événement "click" sur chaque icône
     deletedIcons[i].addEventListener("click", function (event) {
+      event.preventDefault();
       
+      teste[i].parentNode.remove();//suppression du DOM l'image cliquer en dehors de la modal
+
       // Récupérer l'ID de l'icône spécifique sur laquelle vous avez cliqué
-      const iconId = this.getAttribute('id');
+      const iconId = this.getAttribute('id');// Pour faire la requete, d'ou le setAttribute()
+      this.parentNode.remove();//suppression du DOM l'image cliquer dans la modal
 
       // Effectuer une requête FETCH avec l'ID de l'icône pour récupérer les données spécifiques du travail
       fetch(`http://localhost:5678/api/works/${iconId}`, {
@@ -119,7 +125,7 @@ function deletWorkIds(data) {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
-          event.preventDefault();//page don't refresh
+          return response.json()
         })
         // Gérer les erreurs
         .catch(error => {
@@ -164,7 +170,8 @@ input.addEventListener("change", updateImageDisplay);
 
 const form = document.querySelector("#workinfo"); // Form element
 const output = document.querySelector("#output"); // Output container
-const trye = document.querySelector(".box-timer");// timer container
+const timerContainer = document.querySelector(".box-timer");// timer container
+const submitButton = document.querySelector("#btn");
 
 // Event listener for form submission
 form.addEventListener("submit", async (event) => {
@@ -186,43 +193,66 @@ form.addEventListener("submit", async (event) => {
         break;
   }
 
-    // Add elements to FormData within the form submission callback function
-    const formData = new FormData(form);
-    
-    // Append the selected image to FormData
-    formData.append("image", newImage, "image/jpeg");
-    
-    formData.set("category", parseInt(formaDataSet)); // Replace input.value with a number, paresint to keep like INTEGER, set() default change it like string
+   // Add elements to FormData within the form submission callback function
+   const formData = new FormData(form);
+   const removeMessageError = document.querySelectorAll(".error")
+     
+   removeMessageError.forEach(element => {
+     element.remove();
+   });
    
-    // Remaining time in seconds
-    let remainingTime = 3;
-
-    // Function to update the message with the timer
-    function updateMessage() { 
-      trye.classList.add('output');
-      output.innerHTML = `Your form will be sent in ${remainingTime} seconds...`;
-    }
-
-    function myAnimation() {
-      const timer = document.createElement("div");
-      timer.classList.add("timer-animation");
-      trye.append(timer);
-    }
-
-    // Update the message initially
-    updateMessage();
-    myAnimation();
-    // Countdown
-    const countdownInterval = setInterval(() => {
-        
+   //Image error if no error then append image into formData
+   const imgElement = preview.querySelector(".image-src");
+   if (!imgElement) {
+       const addErrorImg = document.querySelector(".upload-picture");
+       const errorMessage = document.createElement("p");
+       errorMessage.innerHTML = "Vous avez oublié d'ajouter une photo";
+       errorMessage.classList.add("error")
+       addErrorImg.append(errorMessage);
+   } else {
+       // Append the selected image to FormData
+       formData.append("image", newImage, "image/jpeg");
+   }
+   // Title error if no error then append image into formData
+   if(!formData.get("title")){//If there is no string, give an error
+       const addErrorTxt = document.querySelector(".title-input");
+       const errorMessage = document.createElement("p");
+       errorMessage.innerHTML = "Vous avez oublié de mettre un titre";
+       errorMessage.classList.add("error")
+       addErrorTxt.append(errorMessage);
+   }
+   
+   formData.set("category", parseInt(formaDataSet)); // Replace input.value with a number, paresint to keep like INTEGER, set() default change it like string
+  
+   // Remaining time in seconds
+   let remainingTime = 3;
+   
+   if (imgElement &&  formData.get("title")) {
+     
+     submitButton.parentNode.remove();// remove button "Valider" 
+     // Function to update the message with the timer
+     function updateMessage() { 
+       timerContainer.classList.add('output');
+       output.innerHTML = `Your form will be sent in ${remainingTime} seconds...`;
+     }
+     function myAnimation() {
+       const timer = document.createElement("div");
+       timer.classList.add("timer-animation");
+       timerContainer.append(timer);
+     }
+     // Update the message initially
+     updateMessage();
+     myAnimation();
+     // Countdown
+     const countdownInterval = setInterval(() => {
         remainingTime--;
         updateMessage();
         // If the remaining time reaches 0, stop the counter and send the form
         if (remainingTime === 0) {
-            output.innerHTML = "Your form has been successfully sent!";
-            trye.style.background = "green"
+            output.innerHTML = "Votre formulaire a été envoyé !";
+            timerContainer.style.background = "green"
             clearInterval(countdownInterval);
-
+        
             setTimeout(() => {
               // Perform fetch request with FormData
               fetch("http://localhost:5678/api/works", {
@@ -234,15 +264,17 @@ form.addEventListener("submit", async (event) => {
                   if (!response.ok) {
                       throw new Error(`Error ${response.status} while trying to upload the file.`);
                   }
-                  return response.json();
+                  window.location.reload();
               })
               .catch((error) => {
                 console.error('Une erreur est survenue lors de la connexion :', error);
               });
-            }, 1000)
+          }, 1000)
         }
-    }, 1000); // Call every second (1000 milliseconds)
+     }, 1000); // Call every second (1000 milliseconds)
+   }
 });
+
 // Function to update the display with selected images
 function updateImageDisplay() {
     // Clear previous content in preview
@@ -260,6 +292,7 @@ function updateImageDisplay() {
     } else {
         // Display the selected image
         const image = document.createElement("img");
+        submitButton.style.background = "#1D6154";// change background to btn submit
         preview.appendChild(image);
         for (let i = 0; i < curFiles.length; i++) {
             // Check if the file type is valid

@@ -12,8 +12,8 @@
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="./assets/style.css">
-	<link rel="stylesheet" href="/FrontEnd/assets/style.modal.css">
-	<link rel="stylesheet" href="/FrontEnd/assets/style.homepage.edit.css">
+	<link rel="stylesheet" href="/assets/style.modal.css">
+	<link rel="stylesheet" href="./assets/style.homepage.edit.css">
 </head>
 <body>
 	<!-- Code ADDED -->
@@ -59,7 +59,7 @@
 				<h2 id="title-modal">Galerie photo</h2>
 				<div class="gallery-modal">
 				</div>
-				<a class="btn">Ajouter une photo</a>
+				<a class="btn active-btn">Ajouter une photo</a>
 			</div>
 			<div class="modal-wrapper2">
 				<div class="icons-groups">
@@ -71,12 +71,12 @@
 					<div class="upload-picture">
 						<div class="uploaded" id="preview">
 							<i class="fa-regular fa-image icon-image"></i>
-							<label for="new-work-pics" class="btn-add-pics">+ Ajouter photo</label>
+							<label for="new-work-pics" class="btn-add-pics active-btn">+ Ajouter photo</label>
 							<input type="file" name="image" id="new-work-pics">
 							<p class="jpg-txt">jpg, png : 4mo max</p>
 						</div>
 					</div>
-					<span>
+					<span class="title-input">
 						<label for="title">Titre</label>
 						<br>
 						<input type="text" name="title" id="title" class="input-add-pics">
@@ -91,8 +91,8 @@
 							<option  value="Hotels & restaurants">Hotels & restaurants</option>
 						</select>
 					</span>
-					<p>
-						<input type="submit" class="btn-send" value="Envoyer la réponse" />
+					<p class="btn-submit">
+						<input type="submit" id="btn" class="btn-send btn active-btn" value="Valider" />
 					  </p>
 				</form>
 				<div class="box-timer">
@@ -118,15 +118,6 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
-	
-		<!-- <div id="output">
-			<p>Your form will be sent in 5s ...</p>
-			<div class="timer-animation"></div>
-		</div>-->
-		
-	
-	
-	
 </main>
 <footer>
 	<nav>

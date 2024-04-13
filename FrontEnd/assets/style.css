@@ -29,6 +29,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
+	
 	line-height: 1;
 }
 ol, ul {
@@ -48,7 +49,8 @@ table {
 }
 /** end reset css**/
 body {
-	max-width: 1140px;
+	background-color: #FFFEF8;
+	max-width: 1440px;
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
@@ -56,7 +58,7 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 40px;
 }
 section {
 	margin: 50px 0
@@ -220,36 +222,3 @@ footer nav ul {
 	height: 488.28px;
 	object-fit: cover;
 }
-
-.output{
-	display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: absolute;
-    top: 50%;
-    gap: 30px;
-    background: #738894;
-    padding: 20px;
-    width: 700px;
-    height: 100px;
-    font-size: 20px;
-    color: white;
-}
-
-.timer-animation {
-	background: #ffffff;
-    width: 100%;
-    display: flex;
-    height: 20px;
-    animation: 5s slidein;
-  }
-
-@keyframes slidein {
-	from {
-	  transform: scaleX(0);
-	}
-	to {
-	  transform: scaleX(1);
-	}
-  }

@@ -1,6 +1,9 @@
 import { filtersButton } from "./filters.js";  
-
-// Function to create DOM elements from working data
+/************************************************************************************************************ 
+**                                                                                                         **
+**                     Function to create DOM elements from working data                                   **
+**                                                                                                         **
+*************************************************************************************************************/
 
 function createWorksElements(data) {
   // select DOM Element classe .gallery;
@@ -31,7 +34,12 @@ function createWorksElements(data) {
   filtersButton(data)
 }
 
-// Request Get to URL woks from API 
+/************************************************************************************************************ 
+**                                                                                                         **
+**                                // Request Get to URL woks from API                                      **
+**                                                                                                         **
+*************************************************************************************************************/
+
 fetch("http://localhost:5678/api/works")
   //When promise is return, response convert HTTP in object JSON
   .then(response => {

@@ -1,15 +1,25 @@
-//DYNAMICALLY ADD BUTTON FILTERS in the “btn-filters” class tag
+/************************************************************************************************************ 
+**                                                                                                         **
+**                     //DYNAMICALLY ADD BUTTON FILTERS in the “btn-filters” class tag                     **
+**                                                                                                         **
+*************************************************************************************************************/
+
 const addButtonsFilters = document.querySelector(".btn-filters");
+
 //Array for the text of each button
 const textButton = ["Tous", "Objets", "Appartements", "Hôtels & restaurants"];
+
 //Creation of 4 buttons in one go with a loop
 for (let i = 0; i < 4; i++) {
     const buttons = document.createElement("button");
+
     //Add text to the buttons, from the textButton array
     buttons.innerHTML = textButton[i]
     //Added the class, to change the CSS
+
     buttons.classList.add("button-categories")
     //Added buttons in the HTML
+
     addButtonsFilters.appendChild(buttons);
 
     // Using the switch to add the specific class to each button
@@ -30,6 +40,12 @@ for (let i = 0; i < 4; i++) {
             break;
     }
 }
+
+/************************************************************************************************************ 
+**                                                                                                         **
+**                              //fUCTION TO FILTER WORKS BY CATEGORIES                                    **
+**                                                                                                         **
+*************************************************************************************************************/
 
 export function filtersButton(data) {
     // Select the buttons and figure elements
@@ -79,5 +95,3 @@ export function filtersButton(data) {
         displayElements(hotelAndRestaurant, "grid");
     });
 }
-
-//******************************************************************************************* 

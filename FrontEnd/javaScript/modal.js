@@ -1,3 +1,8 @@
+/************************************************************************************************************ 
+**                                                                                                         **
+**                 // Create const to get element from the DOM to open and close modla with funcion        **
+**                                                                                                         **
+*************************************************************************************************************/
 const modalAddPictures = document.querySelector(".modal-wrapper2");
 const modalDeletedPics = document.querySelector(".modal-wrapper");
 
@@ -54,9 +59,16 @@ function modalswitch() {
     modalDeletedPics.style.display = "none";
   })
 }
+
 //call each function for Modal
 OpenAndCloseModal();
 modalswitch();
+
+/************************************************************************************************************ 
+**                                                                                                         **
+**                 // Create works Element added Dynamically, with function createWorksElements(data)      **
+**                                                                                                         **
+*************************************************************************************************************/
 
 const token = JSON.parse(window.localStorage.getItem("token")); // token for delete and Post works
 
@@ -89,31 +101,42 @@ function createWorksElements(data) {
     }
 }
 
-// Function to log the ids of items and request to delet from the API HTTP
+/************************************************************************************************************ 
+**                                                                                                         **
+**       // Function to log the ids of items and request to delet from the API HTTP with token             **
+**                                                                                                         **
+*************************************************************************************************************/
+
 function deletWorkIds(data) {
-  const teste = document.querySelectorAll(".images-works");//supprimer aussi le parendNode de l'image qui est a part de la modal
-  const deletedIcons = document.querySelectorAll(".trash-icons");//selectionne toute les images poubelles 
+  const teste = document.querySelectorAll(".images-works");//remove the parendNode from the image which is apart from the modal
+  const deletedIcons = document.querySelectorAll(".trash-icons");//select all trash images 
   
-  // On stocke chaque id des travaux dans une variable, à l'aide de la fonction map(qui sera dans un tableau automatiquement)
+  // We store each job id in a variable, using the map function (which will be in an array automatically)
   const id = data.map(data => data.id);
   
-  // Parcourir chaque icône de suppression
+  // Chek into all trash icons and add to each icons an envetListener (ROW 124)
   for (let i = 0; i < deletedIcons.length; i++) {
     
-    // Ajouter l'attribut id à l'icône de suppression POUR PASSER LA REQUETE FETCH
+    // Add id attribute to delete icon TO PASS FETCH REQUEST
     deletedIcons[i].setAttribute('id', id[i]);
 
-    // Éviter de créer 100 fois un événement "click", si on met juste "deletedIcons", mais si on met "deletedIcons[i]", on cible et crée un seul événement "click" sur chaque icône
+    // Avoid (éviter) creating a "click" event 100 times, if we just put "deletedIcons", but if we put "deletedIcons[i]", we target and create a single "click" event on each icon
     deletedIcons[i].addEventListener("click", function (event) {
+
       event.preventDefault();
       
-      teste[i].parentNode.remove();//suppression du DOM l'image cliquer en dehors de la modal
+      teste[i].parentNode.remove();//removing  image from DOM, image from outside of the modal
 
-      // Récupérer l'ID de l'icône spécifique sur laquelle vous avez cliqué
-      const iconId = this.getAttribute('id');// Pour faire la requete, d'ou le setAttribute()
-      this.parentNode.remove();//suppression du DOM l'image cliquer dans la modal
+      // GET the ID of the specific icon you clicked
+      const iconId = this.getAttribute('id');// TO DO THE REQUEST TO SPECIFY WICH ID WE WANT DELETE
 
-      // Effectuer une requête FETCH avec l'ID de l'icône pour récupérer les données spécifiques du travail
+      this.parentNode.remove();//remove the DOM the image click in the modal
+
+      /**************************************************
+        *          Request API HTTP DELETE              *
+        *     (DO a FETCH request with the icon ID      *
+        *          to GET job specific data)            *
+        *************************************************/
       fetch(`http://localhost:5678/api/works/${iconId}`, {
         method: "DELETE",
         headers: {
@@ -135,7 +158,12 @@ function deletWorkIds(data) {
   }
 }
 
-// Request Get to URL woks from API 
+/************************************************************************************************************ 
+**                                                                                                         **
+**                                // Request Get to URL woks from API                                      **
+**                                                                                                         **
+*************************************************************************************************************/
+
 fetch("http://localhost:5678/api/works")
   //When promise is return, response convert HTTP in object JSON
   .then(response => {
@@ -156,14 +184,17 @@ fetch("http://localhost:5678/api/works")
   });
 
 
+/************************************************************************************************************ 
+**                                                                                                         **
+**            // Replace all content in div class="uploaded" with images from files                        **
+**                                                                                                         **
+*************************************************************************************************************/
 
-
-// Replace all content in div class="uploaded" with images from files
 const input = document.getElementById("new-work-pics"); // Input element for selecting images
 const preview = document.getElementById("preview"); // Container to display preview of selected images
 let newImage = ""; // Variable to hold the selected image globally
 const categoryValue = document.querySelector("#categories"); // Input element for selecting categories
-let formaDataSet = ""; // Variable to store the selected category
+let formaDataSet = ""; // Variable to store the selected categoryID (ROW 214, 217, 120)
 
 // Event listener to trigger when files are selected
 input.addEventListener("change", updateImageDisplay);
@@ -173,11 +204,16 @@ const output = document.querySelector("#output"); // Output container
 const timerContainer = document.querySelector(".box-timer");// timer container
 const submitButton = document.querySelector("#btn");
 
-// Event listener for form submission
+/************************************************************************************************************ 
+**                                                                                                         **
+**                                // Event listener for form submission                                    **
+**                                                                                                         **
+*************************************************************************************************************/
+
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-  // Determine the category value based on the selected option
+  // Determine the category value based on the selected option VARIABLE CALL AT ROW 197
   switch (categoryValue.value) {
     case "Objets":
         formaDataSet = parseInt(1);
@@ -193,10 +229,11 @@ form.addEventListener("submit", async (event) => {
         break;
   }
 
-   // Add elements to FormData within the form submission callback function
+   // This code creates a new FormData object using data from a specified HTML form.
    const formData = new FormData(form);
+  
+   // For each message error exist remove it (like we don't submitted error message again )
    const removeMessageError = document.querySelectorAll(".error")
-     
    removeMessageError.forEach(element => {
      element.remove();
    });
@@ -213,6 +250,7 @@ form.addEventListener("submit", async (event) => {
        // Append the selected image to FormData
        formData.append("image", newImage, "image/jpeg");
    }
+
    // Title error if no error then append image into formData
    if(!formData.get("title")){//If there is no string, give an error
        const addErrorTxt = document.querySelector(".title-input");
@@ -221,61 +259,78 @@ form.addEventListener("submit", async (event) => {
        errorMessage.classList.add("error")
        addErrorTxt.append(errorMessage);
    }
-   
-   formData.set("category", parseInt(formaDataSet)); // Replace input.value with a number, paresint to keep like INTEGER, set() default change it like string
+
+   // Replace input.value with a number, paresint to keep like INTEGER, set() default change it like string (ROW 214, 217, 120)
+   formData.set("category", parseInt(formaDataSet));
   
    // Remaining time in seconds
    let remainingTime = 3;
    
+   //Condition if image and title be there 
    if (imgElement &&  formData.get("title")) {
      
      submitButton.parentNode.remove();// remove button "Valider" 
+
      // Function to update the message with the timer
      function updateMessage() { 
        timerContainer.classList.add('output');
        output.innerHTML = `Your form will be sent in ${remainingTime} seconds...`;
      }
+     // fuction to created an animation 
      function myAnimation() {
        const timer = document.createElement("div");
        timer.classList.add("timer-animation");
        timerContainer.append(timer);
      }
+
      // Update the message initially
      updateMessage();
      myAnimation();
+
      // Countdown
      const countdownInterval = setInterval(() => {
         remainingTime--;
         updateMessage();
+
         // If the remaining time reaches 0, stop the counter and send the form
         if (remainingTime === 0) {
-            output.innerHTML = "Votre formulaire a bien été envoyé !";
-            timerContainer.style.background = "green"
-            clearInterval(countdownInterval);
-        
-            setTimeout(() => {
-              // Perform fetch request with FormData
-              fetch("http://localhost:5678/api/works", {
-                  method: "POST",
-                  headers: { "Authorization": `Bearer ${token}`},
-                  body: formData
-              })
-              .then((response) => {
-                  if (!response.ok) {
-                      throw new Error(`Error ${response.status} while trying to upload the file.`);
-                  }
-                  window.location.reload();
-              })
-              .catch((error) => {
-                console.error('Une erreur est survenue lors de la connexion :', error);
-              });
+          //create a message to send to the user than form is sended 
+          output.innerHTML = "Votre formulaire a bien été envoyé !";
+          timerContainer.style.background = "green"
+          clearInterval(countdownInterval);
+      
+          setTimeout(() => {
+            /**************************************************
+            *          Request API HTTP POST                  *
+            *   ( Perform fetch request with FormData)        *
+            ***************************************************/
+
+            fetch("http://localhost:5678/api/works", {
+                method: "POST",
+                headers: { "Authorization": `Bearer ${token}`},
+                body: formData
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status} while trying to upload the file.`);
+                }
+                window.location.reload();
+            })
+            .catch((error) => {
+              console.error('Une erreur est survenue lors de la connexion :', error);
+            });
           }, 1000)
         }
      }, 1000); // Call every second (1000 milliseconds)
    }
 });
 
-// Function to update the display with selected images
+/************************************************************************************************************ 
+**                                                                                                         **
+**                        // Function to update the display with selected images                           **
+**                                                                                                         **
+*************************************************************************************************************/
+
 function updateImageDisplay() {
     // Clear previous content in preview
     while (preview.firstChild) {
@@ -305,10 +360,14 @@ function updateImageDisplay() {
     }
 }
 
-// Array containing valid file types
+/************************************************************************************************************ 
+**                                                                                                         **
+**                // Array containing valid file types and // Function to validate file type               **
+**                                                                                                         **
+*************************************************************************************************************/
+
 var fileTypes = ["image/jpeg", "image/png"];
 
-// Function to validate file type
 function validFileType(file) {
     // Logic to validate file type
     for (var i = 0; i < fileTypes.length; i++) {

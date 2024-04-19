@@ -1,61 +1,76 @@
+/************************************************************************************************************ 
+**                                                                                                         **
+**                                // Function for submit connecion request                                 **
+**                                                                                                         **
+*************************************************************************************************************/
+
 function usersConnexion() {
   const connexionFormular = document.querySelector(".connexion-formular");
   connexionFormular.addEventListener("submit", function (event) {
-      event.preventDefault();
-      
-      // Récupérer les valeurs des champs de saisie du formulaire
-      const email = event.target.querySelector("[name=email]").value;
-      const password = event.target.querySelector("[name=password]").value;
 
-      // Création de l'objet utilisateur avec les valeurs des champs de saisie
-      const user = {
-          email: email,
-          password: password
-      }
+        //NO RELOADING 
+        event.preventDefault();
 
-      // Création de la charge utile au format JSON
-      const chargeUtile = JSON.stringify(user);
+        // Take the values ​​of the form input fields
+        const email = event.target.querySelector("[name=email]").value;
+        const password = event.target.querySelector("[name=password]").value;   
 
-      // Appel de la fonction fetch avec toutes les informations nécessaires
-      fetch("http://localhost:5678/api/users/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: chargeUtile
-      })
-      .then(response => {
-          if (!response.ok) {
-              throw new Error('Erreur lors de la connexion');
-          }
-          return response.json();
-      })
-      .then(data => {
-        //mettre le token disponible
-          localStorage.setItem("token", JSON.stringify(data.token));
-          //console.log(JSON.parse(localStorage.getItem("token")));
-          // Exemple de redirection vers  une autre page
-          window.location.href = "./homepage.edit.html";
-          
-      })
-      .catch(error => {
-            const formularSection = document.querySelector(".formular");
-            console.error('Une erreur est survenue lors de la connexion :', error);
-            // Afficher un message d'erreur à l'utilisateur
-            const removeMessageError = document.querySelector(".error-message")
-            if (removeMessageError) {
-                formularSection.removeChild(removeMessageError);
+        // Creation of the user object with the values ​​of the input fields
+        const user = {
+            email: email,
+            password: password
+        }   
+
+        // Convert object "user" in JSON format, for send data to the serveur cuz this : headers: { "Content-Type": "application/json" },
+        const chargeUtile = JSON.stringify(user);   
+
+        /**************************************************
+        *          Request API HTTP POST                  *
+        * (used to submit data for processing to a server)*
+        ***************************************************/
+        fetch("http://localhost:5678/api/users/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: chargeUtile
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de la connexion');
             }
-            const addMessageError = document.createElement("p");
-            //Add text and class 
-            addMessageError.innerHTML = "Erreur dans l’identifiant ou le mot de passe";
-            addMessageError.classList.add("error-message");
-            //add tag <p> before Log in
-            formularSection.insertBefore(addMessageError, formularSection.firstChild);
-        
-      });
+            return response.json();
+        })
+        .then(data => {
+
+            // Get the token and stock into browser (navigateur)
+            localStorage.setItem("token", JSON.stringify(data.token)); 
+            // why use JSON.stringify(data.token) cuz localStorage only store strings data.token is a data object.
+
+            // Go to the edit page
+            window.location.href = "./homepage.edit.html";
+
+        })
+        .catch(error => {
+              const formularSection = document.querySelector(".formular");
+
+              // Show a error message to the user 
+              const removeMessageError = document.querySelector(".error-message")
+              if (removeMessageError) {
+                  formularSection.removeChild(removeMessageError);
+              }
+              const addMessageError = document.createElement("p");
+
+              //Add text and class 
+              addMessageError.innerHTML = "Erreur dans l’identifiant ou le mot de passe";
+              addMessageError.classList.add("error-message");
+
+              //add tag <p> before Log in
+              formularSection.insertBefore(addMessageError, formularSection.firstChild);
+          
+        });
   });
 }
 
-// Appeler la fonction lors du chargement de la page
+// call the fuction When the page load
 usersConnexion();
 
 

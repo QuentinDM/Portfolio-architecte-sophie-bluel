@@ -248,7 +248,7 @@ form.addEventListener("submit", async (event) => {
        addErrorImg.append(errorMessage);
    } else {
        // Append the selected image to FormData
-       formData.append("image", newImage, "image/jpeg");
+       formData.append("image", newImage /* row 355*/, "image/jpeg");
    }
 
    // Title error if no error then append image into formData
@@ -332,29 +332,28 @@ form.addEventListener("submit", async (event) => {
 *************************************************************************************************************/
 
 function updateImageDisplay() {
-    // Clear previous content in preview
-    while (preview.firstChild) {
-        preview.removeChild(preview.firstChild);
-    }
 
     const curFiles = input.files; // Get the selected files
-    
     // Check if files are selected
     if (curFiles.length === 0) {
         const para = document.createElement("p");
         para.textContent = "No file selected for upload";
         preview.appendChild(para);
     } else {
-        // Display the selected image
-        const image = document.createElement("img");
         submitButton.style.background = "#1D6154";// change background to btn submit
-        preview.appendChild(image);
         for (let i = 0; i < curFiles.length; i++) {
             // Check if the file type is valid
             if (validFileType(curFiles[i])) {
+              // Clear all element in div class="preview" (row 194)
+              while (preview.firstChild) {
+                  preview.removeChild(preview.firstChild);
+              }
+              //Add img inside the DIV CLASS=".upload-pictures"(row 193)
+                const image = document.createElement("img");
                 image.src = window.URL.createObjectURL(curFiles[i]);
                 image.classList.add("image-src");
                 newImage = curFiles[i];
+                preview.appendChild(image);
             }
         }
     }
@@ -375,5 +374,14 @@ function validFileType(file) {
             return true;
         }
     }
+    /*******************************************************************
+    *     // Create the message error if the files types isn't good    *
+    ********************************************************************/
+    const addErrorFilesType = document.querySelector(".upload-picture");
+    const errorMessage = document.createElement("p");
+    errorMessage.innerHTML = "Veuillez sélectionner une image au format JPG ou PNG."
+    errorMessage.classList.add("error")
+    addErrorFilesType.append(errorMessage);
+  
     return false;
 }

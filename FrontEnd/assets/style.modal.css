@@ -151,6 +151,10 @@
     border-radius: 3px;
     background-color: #E8F1F6;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .uploaded{

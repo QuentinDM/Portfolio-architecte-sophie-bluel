@@ -85,6 +85,7 @@ function createWorksElements(data) {
         const imageElement = document.createElement("img");
         imageElement.src = works.imageUrl;
         imageElement.classList.add("images-modal-one");
+        imageElement.setAttribute("alt", works.title) // add alt attribute use if we cannot see img or read by screen reader on the modal
 
         // Create trash icon
         const deletedIcons = document.createElement("i");

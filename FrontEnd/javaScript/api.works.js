@@ -15,10 +15,12 @@ function createWorksElements(data) {
     const worksElement = document.createElement("figure");
     worksElement.setAttribute("data-value", works.categoryId);
 
+
     // Create an <img> element for the work image
     const imageElement = document.createElement("img");
     imageElement.src = works.imageUrl;
     imageElement.classList.add("images-works");
+    imageElement.setAttribute("alt", works.title) // add alt attribute use if we cannot see img or read by screen reader
 
     // Create a <figcaption> element for the work title
     const titleElement = document.createElement("figcaption");

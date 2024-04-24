@@ -18,6 +18,7 @@ function createWorksElements(data) {
       const imageElement = document.createElement("img");
       imageElement.src = works.imageUrl;
       imageElement.classList.add("images-works");
+      imageElement.setAttribute("alt", works.title) // add alt attribute use if we cannot see img or read by screen reader
   
       const titleElement = document.createElement("figcaption");
       titleElement.innerHTML = works.title;

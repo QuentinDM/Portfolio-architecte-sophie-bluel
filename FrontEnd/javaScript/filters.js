@@ -56,7 +56,7 @@ export function filtersButton(data) {
     const hotelAndRestaurant = document.querySelectorAll('figure[data-value="3"]');
     
     // Function to display elements with a given style
-    function displayElements(elements, displayStyle) {
+    function displayElements(elements, displayStyle) {//******************************************
         elements.forEach(element => {
             element.style.display = displayStyle;
         });
@@ -65,14 +65,14 @@ export function filtersButton(data) {
     // Event listener for the "Tous" button
     buttonFilterTous.addEventListener("click", function () {
         // Display all elements
-        displayElements(tous, "grid");
+        displayElements(tous, "grid");//************************************ 
     });
 
     // Event listener for the "Objets" button
     const buttonFilterObjets = document.querySelector(".btn-objets");
     buttonFilterObjets.addEventListener("click", function () {
         // Display objets and hide other categories
-        displayElements(objets, "grid");
+        displayElements(objets, "grid");//************************************ 
         displayElements(appartements, "none");
         displayElements(hotelAndRestaurant, "none");
     });

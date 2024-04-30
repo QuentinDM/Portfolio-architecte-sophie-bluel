@@ -13,12 +13,12 @@ function createWorksElements(data) {
   for (let i = 0; i < data.length; i++) {
     const works = data[i];
     const worksElement = document.createElement("figure");
-    worksElement.setAttribute("data-value", works.categoryId);
+    worksElement.setAttribute("data-value", works.categoryId);// *************
 
 
     // Create an <img> element for the work image
     const imageElement = document.createElement("img");
-    imageElement.src = works.imageUrl;
+    imageElement.src = works.imageUrl;//************************* for filters
     imageElement.classList.add("images-works");
     imageElement.setAttribute("alt", works.title) // add alt attribute use if we cannot see img or read by screen reader
 
@@ -42,7 +42,7 @@ function createWorksElements(data) {
 **                                                                                                         **
 *************************************************************************************************************/
 
-fetch("http://localhost:5678/api/works")
+fetch("http://localhost:5678/api/works")//********************* 
   //When promise is return, response convert HTTP in object JSON
   .then(response => {
     //Check if response is responding

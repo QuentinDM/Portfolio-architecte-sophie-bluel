@@ -28,10 +28,10 @@ function usersConnexion() {
         *          Request API HTTP POST                  *
         * (used to submit data for processing to a server)*
         ***************************************************/
-        fetch("http://localhost:5678/api/users/login", {
+        fetch("http://localhost:5678/api/users/login", {//****************** 
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: chargeUtile
+            headers: { "Content-Type": "application/json" },// en-tete qui specifie que la requete est au format JSON  en definissant application/json qui est le format demander
+            body: chargeUtile // data i want to send with the request 
         })
         .then(response => {
             if (!response.ok) {

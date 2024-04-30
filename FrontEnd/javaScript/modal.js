@@ -89,7 +89,7 @@ function createWorksElements(data) {
 
         // Create trash icon
         const deletedIcons = document.createElement("i");
-        deletedIcons.classList.add("fa-solid", "fa-trash-can", "trash-icons"); // Add classes for the trash icon
+        deletedIcons.classList.add("fa-solid", "fa-trash-can", "trash-icons"); // Add classes for the trash icon **********************************************
 
         // Create a container for the image and trash icon
         const container = document.createElement("div");
@@ -315,7 +315,8 @@ form.addEventListener("submit", async (event) => {
                 if (!response.ok) {
                     throw new Error(`Error ${response.status} while trying to upload the file.`);
                 }
-                window.location.reload();
+               // window.location.reload();
+               event.preventDefault();
             })
             .catch((error) => {
               console.error('Une erreur est survenue lors de la connexion :', error);

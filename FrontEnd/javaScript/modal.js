@@ -72,11 +72,11 @@ modalswitch();
 
 const token = JSON.parse(window.localStorage.getItem("token")); // token for delete and Post works
 
+// select DOM Element with class .gallery
+    const divGalleryModale = document.querySelector(".gallery-modal");
 // Function to create DOM elements from working data
 function createWorksElements(data) {
-    // select DOM Element with class .gallery
-    const divGallery = document.querySelector(".gallery-modal");
-
+    
     // Loop through data and add image and title into figure tag, then append the figure tag to the DOM element with class .gallery
     for (let i = 0; i < data.length; i++) {
         const works = data[i];
@@ -97,7 +97,7 @@ function createWorksElements(data) {
         container.appendChild(deletedIcons);
 
         // Append the container to the gallery
-        divGallery.appendChild(container);
+        divGalleryModale.appendChild(container);
 
     }
 }
@@ -109,7 +109,7 @@ function createWorksElements(data) {
 *************************************************************************************************************/
 
 function deletWorkIds(data) {
-  const teste = document.querySelectorAll(".images-works");//remove the parendNode from the image which is apart from the modal
+  const imageToRemove = document.querySelectorAll(".images-works");//remove the parendNode from the image which is apart from the modal
   const deletedIcons = document.querySelectorAll(".trash-icons");//select all trash images 
   
   // We store each job id in a variable, using the map function (which will be in an array automatically)
@@ -126,7 +126,7 @@ function deletWorkIds(data) {
 
       event.preventDefault();
       
-      teste[i].parentNode.remove();//removing  image from DOM, image from outside of the modal
+      imageToRemove[i].parentNode.remove();//removing  image from DOM, image from outside of the modal
 
       // GET the ID of the specific icon you clicked
       const iconId = this.getAttribute('id');// TO DO THE REQUEST TO SPECIFY WICH ID WE WANT DELETE
@@ -144,13 +144,6 @@ function deletWorkIds(data) {
           "Authorization": `Bearer ${token}` // Utilisation du token obtenu à partir de la réponse précédente
       } 
       })
-        .then(response => {
-          // Vérifier si la réponse est correcte
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json()
-        })
         // Gérer les erreurs
         .catch(error => {
           console.error('Une erreur est survenue lors de la récupération des données :', error);
@@ -263,7 +256,7 @@ form.addEventListener("submit", async (event) => {
 
    // Replace input.value with a number, paresint to keep like INTEGER, set() default change it like string (ROW 214, 217, 120)
    formData.set("category", parseInt(formaDataSet));
-  
+   
    // Remaining time in seconds
    let remainingTime = 3;
    
@@ -315,8 +308,21 @@ form.addEventListener("submit", async (event) => {
                 if (!response.ok) {
                     throw new Error(`Error ${response.status} while trying to upload the file.`);
                 }
-               // window.location.reload();
-               event.preventDefault();
+                return response.json();
+            })//visuel d'ajout image avec la manipulation du DOM
+            .then(data => { 
+              console.log(data);
+              /*const divGalleryHomePage = document.querySelector(".gallery");
+              const divGalleryModale = document.querySelector(".gallery-modal");
+              
+              const worksElement = document.createElement("figure");
+  
+              const imageElement = document.createElement("img");
+              imageElement.src = data.imageUrl;
+              console.log(imageElement);
+              imageElement.classList.add("images-works");*/
+
+
             })
             .catch((error) => {
               console.error('Une erreur est survenue lors de la connexion :', error);

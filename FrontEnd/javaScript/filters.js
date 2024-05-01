@@ -3,6 +3,8 @@
 **                     //DYNAMICALLY ADD BUTTON FILTERS in the “btn-filters” class tag                     **
 **                                                                                                         **
 *************************************************************************************************************/
+
+//Partie qui Ajoute nos bouton de filtres et filtre les elements
 fetch("http://localhost:5678/api/categories")
   //When promise is return, response convert HTTP in object JSON
   .then(response => {
@@ -14,96 +16,45 @@ fetch("http://localhost:5678/api/categories")
   })
   // receive data from response.JSON() and call createWorksElements(data) function
   .then(data => {
+
     const categoryName =  data.map(data => data.name);
-    categoryName.unshift("Tous");
-    console.log(categoryName);
+    categoryName.unshift("Tous");//add TOUS in the map 
     const addButtonsFilters = document.querySelector(".btn-filters");
-    // Boucler à travers le tableau textButton
+    
+    // Ajout visuel des bouton de filtre
     for (let i = 0; i < categoryName.length; i++) {
-            if (categoryName[i] === Array()) {
-                console.log("ta mere");
-            }
+        console.log(categoryName[i]);
         const buttons = document.createElement("button");
         buttons.innerHTML = categoryName[i];
         buttons.classList.add("button-categories");
 
         // Ajouter les boutons au HTML
         addButtonsFilters.appendChild(buttons);
+    }  
 
-        // Utiliser un switch pour ajouter une classe spécifique à chaque bouton
-        switch (i) {
-            case 0:
-                buttons.classList.add("btn-tous");
-                break;
-            case 1:
-                buttons.classList.add("btn-objets");
-                break;
-            case 2:
-                buttons.classList.add("btn-appartements");
-                break;
-            case 3:
-                buttons.classList.add("btn-hotels");
-                break;
-            default:
-                break;
-        }
-    }
+    //Ecouteur d'événement pour filtrer nos travaux
+    document.querySelectorAll(".button-categories").forEach(button => {
+        button.addEventListener("click", function() {
+            const category = this.textContent; // Récupère le nom de la catégorie du bouton cliqué
+            const figures = document.querySelectorAll('.gallery figure');
+    
+            figures.forEach(figure => {
+                const figureCategory = figure.getAttribute('id'); // Récupère la catégorie de la figure à partir de l'attribut id (ou un autre attribut approprié)
+                console.log(figureCategory);
+                if (category === "Tous") {
+                    figure.style.display = "grid"; // si le bouton cliqué, à pour textContent "Tous", alors on affiche tous les element
+                }else if (figureCategory === category) {
+                    figure.style.display = "grid";
+                } else if(figureCategory !== category) {
+                    figure.style.display = "none";// Supprime la figure si sa catégorie ne correspond pas à la catégorie sélectionnée
+                }
+            });
+    
+            console.log(category);
+        });
+    });
   })
   // Handle Error
   .catch(error => {
     console.error('Une erreur est survenue lors de la récupération des données :', error);
   });
-/************************************************************************************************************ 
-**                                                                                                         **
-**                              //fUCTION TO FILTER WORKS BY CATEGORIES                                    **
-**                                                                                                         **
-*************************************************************************************************************/
-
-export function filtersButton(data) {
-    // Select the buttons and figure elements
-    const buttonFilterTous = document.querySelector(".btn-tous");
-    const tous = document.querySelectorAll("figure[data-value]");
-    const objets = document.querySelectorAll('figure[data-value="1"]');
-    const appartements = document.querySelectorAll('figure[data-value="2"]');
-    const hotelAndRestaurant = document.querySelectorAll('figure[data-value="3"]');
-    
-    // Function to display elements with a given style
-    function displayElements(elements, displayStyle) {//******************************************
-        elements.forEach(element => {
-            element.style.display = displayStyle;
-        });
-    }
-
-    // Event listener for the "Tous" button
-    buttonFilterTous.addEventListener("click", function () {
-        // Display all elements
-        displayElements(tous, "grid");//************************************ 
-    });
-
-    // Event listener for the "Objets" button
-    const buttonFilterObjets = document.querySelector(".btn-objets");
-    buttonFilterObjets.addEventListener("click", function () {
-        // Display objets and hide other categories
-        displayElements(objets, "grid");//************************************ 
-        displayElements(appartements, "none");
-        displayElements(hotelAndRestaurant, "none");
-    });
-
-    // Event listener for the "Appartements" button
-    const buttonFilterAppartements = document.querySelector(".btn-appartements");
-    buttonFilterAppartements.addEventListener("click", function () {
-        // Display appartements and hide other categories
-        displayElements(objets, "none");
-        displayElements(appartements, "grid");
-        displayElements(hotelAndRestaurant, "none");
-    });
-
-    // Event listener for the "Hotels" button
-    const buttonFilterHotels = document.querySelector(".btn-hotels");
-    buttonFilterHotels.addEventListener("click", function () {
-        // Display hotels and restaurants and hide other categories
-        displayElements(objets, "none");
-        displayElements(appartements, "none");
-        displayElements(hotelAndRestaurant, "grid");
-    });
-}

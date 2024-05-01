@@ -3,35 +3,17 @@
 **                 // Function to create DOM elements from working data FOR HOME PAGE EDIT                 **
 **                                                                                                         **
 *************************************************************************************************************/
+import {elementToCreate} from "./api.works.js"; 
+
+// select DOM Element classe .gallery
+const divGallery = document.querySelector(".gallery");
 
 function createWorksElements(data) {
-
-    // select DOM Element classe .gallery
-    const divGallery = document.querySelector(".gallery");
-    
-    // Loop, Add image and title into figure tag and this figur tag add into Dom element div class .gallery
-    for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < data.length; i++) {
       const works = data[i];
-  
-      const worksElement = document.createElement("figure");
-  
-      const imageElement = document.createElement("img");
-      imageElement.src = works.imageUrl;
-      imageElement.classList.add("images-works");
-      imageElement.setAttribute("alt", works.title) // add alt attribute use if we cannot see img or read by screen reader
-  
-      const titleElement = document.createElement("figcaption");
-      titleElement.innerHTML = works.title;
-  
-      // Add the figur element to the DOM in the divGallery
-      divGallery.appendChild(worksElement);
-      // Add img element to DOM to display image and title
-      worksElement.appendChild(imageElement);
-      worksElement.appendChild(titleElement);
-    }
-  
+      elementToCreate(works, divGallery); // Create the same element created in ./api.works.js file
   }
-  
+}
 
 /************************************************************************************************************ 
 **                                                                                                         **

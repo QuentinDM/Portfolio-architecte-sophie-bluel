@@ -1,40 +1,38 @@
-import { filtersButton } from "./filters.js";  
 /************************************************************************************************************ 
 **                                                                                                         **
 **                     Function to create DOM elements from working data                                   **
 **                                                                                                         **
 *************************************************************************************************************/
+// select DOM Element classe .gallery
+const divGallery = document.querySelector(".gallery");
 
 function createWorksElements(data) {
-  // select DOM Element classe .gallery;
-  const divGallery = document.querySelector(".gallery");
-  
-  // Loop, Add image and title into figure tag and this figur tag add into Dom element div class .gallery
   for (let i = 0; i < data.length; i++) {
-    const works = data[i];
-    const worksElement = document.createElement("figure");
-    worksElement.setAttribute("data-value", works.categoryId);// *************
-
-
-    // Create an <img> element for the work image
-    const imageElement = document.createElement("img");
-    imageElement.src = works.imageUrl;//************************* for filters
-    imageElement.classList.add("images-works");
-    imageElement.setAttribute("alt", works.title) // add alt attribute use if we cannot see img or read by screen reader
-
-    // Create a <figcaption> element for the work title
-    const titleElement = document.createElement("figcaption");
-    titleElement.innerHTML = works.title;
-
-    // Add the figur element to the DOM in the divGallery
-    divGallery.appendChild(worksElement);
-    // Add img element to DOM to display image and title
-    worksElement.appendChild(imageElement);
-    worksElement.appendChild(titleElement);
+      const works = data[i];
+      elementToCreate(works, divGallery); // Passer divGallery comme argument
   }
-  // Call the filtersButton function to add event listeners to filter buttons
-  filtersButton(data)
 }
+
+export function elementToCreate(works, divGallery) {
+
+  const worksElement = document.createElement("figure");
+  worksElement.setAttribute("id", works.category.name);//pour filtrer plus tard
+
+  const imageElement = document.createElement("img");
+  imageElement.src = works.imageUrl;
+  imageElement.classList.add("images-works");
+  imageElement.setAttribute("alt", works.title);
+
+  const titleElement = document.createElement("figcaption");
+  titleElement.innerHTML = works.title;
+
+  divGallery.appendChild(worksElement);
+  worksElement.appendChild(imageElement);
+  worksElement.appendChild(titleElement);
+}
+
+
+
 
 /************************************************************************************************************ 
 **                                                                                                         **

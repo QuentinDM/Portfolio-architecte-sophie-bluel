@@ -109,12 +109,12 @@ function createWorksElements(data) {
 *************************************************************************************************************/
 
 function deletWorkIds(data) {
-  const imageToRemove = document.querySelectorAll(".images-works");//remove the parendNode from the image which is apart from the modal
+  
   const deletedIcons = document.querySelectorAll(".trash-icons");//select all trash images 
   
   // We store each job id in a variable, using the map function (which will be in an array automatically)
   const id = data.map(data => data.id);
-  
+  console.log(deletedIcons.length);
   // Chek into all trash icons and add to each icons an envetListener (ROW 124)
   for (let i = 0; i < deletedIcons.length; i++) {
     
@@ -123,7 +123,7 @@ function deletWorkIds(data) {
 
     // Avoid (éviter) creating a "click" event 100 times, if we just put "deletedIcons", but if we put "deletedIcons[i]", we target and create a single "click" event on each icon
     deletedIcons[i].addEventListener("click", function (event) {
-
+      const imageToRemove = document.querySelectorAll(".images-works");//remove the parendNode from the image which is apart from the modal
       event.preventDefault();
       
       imageToRemove[i].parentNode.remove();//removing  image from DOM, image from outside of the modal
@@ -257,6 +257,7 @@ form.addEventListener("submit", async (event) => {
    // Replace input.value with a number, paresint to keep like INTEGER, set() default change it like string (ROW 214, 217, 120)
    formData.set("category", parseInt(formaDataSet));
    
+   console.log(formData.get("image"));
    // Remaining time in seconds
    let remainingTime = 3;
    
@@ -312,17 +313,114 @@ form.addEventListener("submit", async (event) => {
             })//visuel d'ajout image avec la manipulation du DOM
             .then(data => { 
               console.log(data);
-              /*const divGalleryHomePage = document.querySelector(".gallery");
-              const divGalleryModale = document.querySelector(".gallery-modal");
-              
+              const divGalleryHomePage = document.querySelector(".gallery");
+
               const worksElement = document.createElement("figure");
   
-              const imageElement = document.createElement("img");
-              imageElement.src = data.imageUrl;
-              console.log(imageElement);
-              imageElement.classList.add("images-works");*/
+              const imageElementAdded = document.createElement("img");
+              imageElementAdded.src = data.imageUrl;
+              imageElementAdded.classList.add("images-works", "new-image-added");
+
+              const titleElement = document.createElement("figcaption");
+              titleElement.innerHTML = formData.get("title");
+                        
+              divGalleryHomePage.appendChild(worksElement);
+              worksElement.appendChild(imageElementAdded);
+              worksElement.appendChild(titleElement);
 
 
+              // Create image element and set its src attribute
+              const imageElementModaleAdded = document.createElement("img");
+              imageElementModaleAdded.src = data.imageUrl;
+              imageElementModaleAdded.classList.add("images-modal-one");
+
+              // Create trash icon
+              const deletedIcons = document.createElement("i");
+              deletedIcons.classList.add("fa-solid", "fa-trash-can", "trash-icons"); // Add classes for the trash icon **********************************************
+
+              // Create a container for the image and trash icon
+              const container = document.createElement("div");
+              container.appendChild(imageElementModaleAdded);
+              container.appendChild(deletedIcons);
+
+              // Append the container to the gallery
+              divGalleryModale.appendChild(container);
+              //fin de prensetation visuel
+/***************************************************************************************************************************************************** */
+              
+              deletedIcons.addEventListener("click", function (event) {
+                const newImageToRemove = document.querySelector(".new-image-added");//remove the parendNode from the image which is apart from the modal
+                event.preventDefault();
+                
+                newImageToRemove.parentNode.remove();//removing  image from DOM, image from outside of the modale
+          
+                this.parentNode.remove();//remove the DOM the image click in the modal
+              })
+              //delete image from preview div, we can add more pics
+              const removeImageFromPreviewDiv = document.querySelector(".image-src")
+              removeImageFromPreviewDiv.remove()
+              
+              // Sélectionne le conteneur où tu veux ajouter les éléments
+              const getBackPreviewDiv = document.getElementById("preview");
+
+              // Crée l'élément <div class="uploaded">
+              const uploadedDiv = document.createElement("div");
+              uploadedDiv.classList.add("uploaded");              
+
+              // Crée l'élément <i class="fa-regular fa-image icon-image"></i>
+              const icon = document.createElement("i");
+              icon.classList.add("fa-regular", "fa-image", "icon-image");
+
+              // Crée l'élément <label for="new-work-pics" class="btn-add-pics active-btn">+ Ajouter photo</label>
+              const label = document.createElement("label");
+              label.setAttribute("for", "new-work-pics");
+              label.classList.add("btn-add-pics", "active-btn");
+              label.textContent = "+ Ajouter photo";
+
+              // Crée l'élément <input type="file" name="image" id="new-work-pics">
+              const input = document.createElement("input");
+              input.setAttribute("type", "file");
+              input.setAttribute("name", "image");
+              input.setAttribute("id", "new-work-pics");
+
+              // Crée l'élément <p class="jpg-txt">jpg, png : 4mo max</p>
+              const paragraph = document.createElement("p");
+              paragraph.classList.add("jpg-txt");
+              paragraph.textContent = "jpg, png : 4mo max";
+
+              // Ajoute les éléments créés à uploadedDiv dans l'ordre souhaité
+              uploadedDiv.appendChild(icon);
+              uploadedDiv.appendChild(label);
+              uploadedDiv.appendChild(input);
+              uploadedDiv.appendChild(paragraph);
+
+              // Ajoute uploadedDiv au conteneur
+              getBackPreviewDiv.appendChild(uploadedDiv);
+
+              //Delete message from timer
+              const timerMessageDelete = document.querySelector('.box-timer.output');
+              timerMessageDelete.remove();
+              
+              // Création de l'élément <p class="btn-submit">
+              const textValidationButton = document.createElement("p");
+              textValidationButton.classList.add("btn-submit");
+
+              // Création de l'élément <input type="submit" id="btn" class="btn-send btn active-btn" value="Valider">
+              const inpuTypeSubmit = document.createElement("input");
+              inpuTypeSubmit.setAttribute("type", "submit");
+              inpuTypeSubmit.setAttribute("id", "btn");
+              inpuTypeSubmit.classList.add("btn-send", "btn", "active-btn");
+              inpuTypeSubmit.setAttribute("value", "Valider");
+
+              // Ajout de l'input à l'élément <p class="btn-submit">
+              textValidationButton.appendChild(inpuTypeSubmit);
+
+              // Ajout de l'élément <p class="btn-submit"> au conteneur sélectionné
+              modalAddPictures.appendChild(textValidationButton);
+
+              input.addEventListener("change", updateImageDisplay);
+
+              modalAddPictures.style.display = "none";//close the modale after the request
             })
             .catch((error) => {
               console.error('Une erreur est survenue lors de la connexion :', error);
@@ -357,11 +455,12 @@ function updateImageDisplay() {
                   preview.removeChild(preview.firstChild);
               }
               //Add img inside the DIV CLASS=".upload-pictures"(row 193)
-                const image = document.createElement("img");
-                image.src = window.URL.createObjectURL(curFiles[i]);
-                image.classList.add("image-src");
-                newImage = curFiles[i];
-                preview.appendChild(image);
+              const image = document.createElement("img");
+              image.src = window.URL.createObjectURL(curFiles[i]);
+              image.classList.add("image-src");
+              newImage = curFiles[i];
+              console.log(newImage);
+              preview.appendChild(image);
             }
         }
     }

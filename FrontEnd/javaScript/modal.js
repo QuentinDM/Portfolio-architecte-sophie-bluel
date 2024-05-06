@@ -114,7 +114,6 @@ function deletWorkIds(data) {
   
   // We store each job id in a variable, using the map function (which will be in an array automatically)
   const id = data.map(data => data.id);
-  console.log(deletedIcons.length);
   // Chek into all trash icons and add to each icons an envetListener (ROW 124)
   for (let i = 0; i < deletedIcons.length; i++) {
     
@@ -257,7 +256,6 @@ form.addEventListener("submit", async (event) => {
    // Replace input.value with a number, paresint to keep like INTEGER, set() default change it like string (ROW 214, 217, 120)
    formData.set("category", parseInt(formaDataSet));
    
-   console.log(formData.get("image"));
    // Remaining time in seconds
    let remainingTime = 3;
    

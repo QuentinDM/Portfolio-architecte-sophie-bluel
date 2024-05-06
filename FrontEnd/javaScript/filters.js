@@ -40,7 +40,7 @@ fetch("http://localhost:5678/api/categories")
     
             figures.forEach(figure => {
                 const figureCategory = figure.getAttribute('id'); // Récupère la catégorie de la figure à partir de l'attribut id (ou un autre attribut approprié)
-                console.log(figureCategory);
+               
                 if (category === "Tous") {
                     figure.style.display = "grid"; // si le bouton cliqué, à pour textContent "Tous", alors on affiche tous les element
                 }else if (figureCategory === category) {
@@ -49,8 +49,6 @@ fetch("http://localhost:5678/api/categories")
                     figure.style.display = "none";// Supprime la figure si sa catégorie ne correspond pas à la catégorie sélectionnée
                 }
             });
-    
-            console.log(category);
         });
     });
   })
